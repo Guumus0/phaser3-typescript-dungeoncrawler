@@ -1,0 +1,73 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 2,
+            "scaleInEditor": 1
+        },
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dugeon_oc.json": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 192,
+                "y": 200.5
+            }
+        },
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dugeon_oc.json#dungeon": {
+            "scaleInDock": 1
+        },
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dungeon-01.json": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 143.5,
+                "y": 232.5
+            }
+        },
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dungeon_map.json": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 260.6666666666667,
+                "y": 266
+            }
+        },
+        "dungeon.tsx": {
+            "scaleInDock": 1
+        },
+        "dungeon_tiles.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 3
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/resources",
+    "last.imagePath": "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles",
+    "map.height": 50,
+    "map.lastUsedFormat": "json",
+    "map.layerDataFormat": null,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "dungeon_map.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "dungeon_tiles.tsx",
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dungeon-01.json",
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dungeon_map.json",
+        "C:/Users/gomie/OneDrive/Escritorio/Stuff/phaser3-typescript-dungeoncrawler/dist/assets/tiles/dugeon_oc.json"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
