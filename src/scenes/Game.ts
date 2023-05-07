@@ -1,9 +1,17 @@
 import * as Phaser from 'phaser';
+
 import { debugDraw } from '../utils/debug'
+import { createLizardAnims } from '../anims/EnemyAnims';
+import { createCharacterAnims } from '../anims/CharacterAnims';
+
+import LizardM from '../enemies/LizardM';
+
+import '../Characters/Fauna'
+import Fauna from '../Characters/Fauna';
 
 export default class Game extends Phaser.Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-    private faune!: Phaser.Physics.Arcade.Sprite
+    private fauna!: Fauna
 
     constructor() {
         super('game');
@@ -14,6 +22,9 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        createCharacterAnims(this.anims)
+        createLizardAnims(this.anims)
+
         const map = this.make.tilemap({ key: 'dungeon_tiles' })
 
         const tileset = map.addTilesetImage('dungeon_tiles', 'tiles', 16, 16, 1, 2)
@@ -24,94 +35,53 @@ export default class Game extends Phaser.Scene {
         wallsLayer.setCollisionByProperty({ collides: true })
         objectLayer.setCollisionByProperty({ collides: true })
 
-        // debugDraw(wallsLayer, this)
-        // debugDraw(objectLayer, this)
+        debugDraw(wallsLayer, this)
+        debugDraw(objectLayer, this)
 
-        this.faune = this.physics.add.sprite(128, 128, 'fauna')
-        this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.8)
+        this.fauna = this.add.fauna(128, 128, 'fauna')
 
-        this.anims.create({
-            key: 'fauna-idle-down',
-            frames: [
-                { key: 'fauna', frame: 'walk-down-3.png' },
-            ]
+
+        this.cameras.main.startFollow(this.fauna, true)
+
+        const lizardsM = this.physics.add.group({
+            classType: LizardM,
+            createCallback: (go) => {
+                const lizGo = go as LizardM
+                lizGo.body.onCollide = true
+            }
         })
 
-        this.anims.create({
-            key: 'fauna-idle-up',
-            frames: [
-                { key: 'fauna', frame: 'walk-up-3.png' },
-            ]
-        })
+        lizardsM.get(256, 128, 'lizard_m')
 
-        this.anims.create({
-            key: 'fauna-idle-side',
-            frames: [
-                { key: 'fauna', frame: 'walk-side-3.png' },
-            ]
-        })
+        // Character collider
+        this.physics.add.collider(this.fauna, wallsLayer)
+        this.physics.add.collider(this.fauna, objectLayer)
 
-        this.anims.create({
-            key: 'fauna-run-down',
-            frames: this.anims.generateFrameNames('fauna', { start: 1, end: 8, prefix: 'run-down-', suffix: '.png' }),
-            repeat: -1,
-            frameRate: 15
-        })
+        // Enemies Collider
+        this.physics.add.collider(lizardsM, wallsLayer)
+        this.physics.add.collider(lizardsM, objectLayer)
 
-        this.anims.create({
-            key: 'fauna-run-up',
-            frames: this.anims.generateFrameNames('fauna', { start: 1, end: 8, prefix: 'run-up-', suffix: '.png' }),
-            repeat: -1,
-            frameRate: 15
-        })
+        // PvE Collider
+        this.physics.add.collider(lizardsM, this.fauna, this.handlePlayerLizardCollision, undefined, this)
+    }
 
-        this.anims.create({
-            key: 'fauna-run-side',
-            frames: this.anims.generateFrameNames('fauna', { start: 1, end: 8, prefix: 'run-side-', suffix: '.png' }),
-            repeat: -1,
-            frameRate: 15
-        })
+    private handlePlayerLizardCollision(obj1: Phaser.GameObjects.GameObject, obj2: Phaser.GameObjects.GameObject) {
+        const lizard = obj2 as LizardM
 
-        this.faune.anims.play('fauna-idle-down')
+        const dx = this.fauna.x - lizard.x
+        const dy = this.fauna.y - lizard.y
 
-        this.physics.add.collider(this.faune, wallsLayer)
-        this.physics.add.collider(this.faune, objectLayer)
-        
-        this.cameras.main.startFollow(this.faune, true)
+        const dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200)
+
+        this.fauna.setVelocity(dir.x, dir.y)
+
+        this.fauna.handleDamage(dir)
     }
 
     update(t: number, dt: number) {
-        if (!this.cursors || !this.faune) {
-            return
-        }
 
-        const speed = 100;
-
-        if (this.cursors.left?.isDown) {
-            this.faune.anims.play('fauna-run-side', true)
-            this.faune.setVelocity(-speed, 0)
-            this.faune.scaleX = -1
-            this.faune.body.offset.x = 24
-        }
-        else if (this.cursors.right?.isDown) {
-            this.faune.anims.play('fauna-run-side', true)
-            this.faune.setVelocity(speed, 0)
-            this.faune.scaleX = 1
-            this.faune.body.offset.x = 8
-        }
-        else if (this.cursors.up?.isDown) {
-            this.faune.anims.play('fauna-run-up', true)
-            this.faune.setVelocity(0, -speed)
-        }
-        else if (this.cursors.down?.isDown) {
-            this.faune.anims.play('fauna-run-down', true)
-            this.faune.setVelocity(0, speed)
-        }
-        else {
-            const parts = this.faune.anims.currentAnim.key.split('-')
-            parts[1] = 'idle'
-            this.faune.play(parts.join('-'))
-            this.faune.setVelocity(0, 0)
+        if (this.fauna) {
+            this.fauna.update(this.cursors)
         }
     }
 }
