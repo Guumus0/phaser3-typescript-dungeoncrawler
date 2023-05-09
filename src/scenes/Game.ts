@@ -35,8 +35,8 @@ export default class Game extends Phaser.Scene {
         wallsLayer.setCollisionByProperty({ collides: true })
         objectLayer.setCollisionByProperty({ collides: true })
 
-        debugDraw(wallsLayer, this)
-        debugDraw(objectLayer, this)
+        // debugDraw(wallsLayer, this)
+        // debugDraw(objectLayer, this)
 
         this.fauna = this.add.fauna(128, 128, 'fauna')
 
